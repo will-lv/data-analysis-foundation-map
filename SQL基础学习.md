@@ -374,9 +374,10 @@ FROM
   (VALUES (1), (2), (2), (4), (4), (6)) AS t(value);
 
 ```
+![image](https://github.com/will-lv/data-analysis-foundation-map/assets/97819830/f7ceb438-eb58-4e9f-aaed-bc45af4130dc)
 
+![image](https://github.com/will-lv/data-analysis-foundation-map/assets/97819830/32f3b656-306e-46ce-9293-b12b1ab44dd6)
 
-![image-20240118161654849](C:\Users\吕佩洁\AppData\Roaming\Typora\typora-user-images\image-20240118161654849.png)
 - row_number() over()     1  2   3   4   5   6    （赋予唯一排名）  中式排名
 - dense_rank() over()  1  2  2  3  3  4   （不跳过排名，可以理解为对类别进行计数）
 - percent_rank() over()  1  2  2  3  3  4    按照数字所在的位置进行百分位分段  计算方法为（RANK - 1)/(N - 1)   0，0.5，1
