@@ -414,5 +414,86 @@ group by student_id
 having cuont(1) = (select count(1) from score where student_id = 2);
 ```
 
+## 增删改
+
+**一般来说自己建数据库，或者数据仓库的同学需要深入学习，对于数据分析师来说，学会如何建表，修改字段等已经足够用，剩下的可以靠chatgpt帮忙补齐**
+
+#### 1.创建一个表’info'
+
+![image](https://github.com/will-lv/data-analysis-foundation-map/assets/97819830/eb24f3f6-73bf-4213-94a9-1aa1bef7d708)
+
+
+```sql
+create table 'info' (
+	'sid' int(11) not null auto_increment primary key comment '自增ID',
+    'student_id' int(11) not null comment '学生ID',
+    'course_id' int(11) not null comment '课程ID',
+    'score' int(11) not null default 0 comment '成绩',
+    sname varchar(16) comment '学生姓名',
+    s_birth datetime comment '生日',
+    constraint 'fk_sc_student' foreign key ('student_id') references 'student' ('sid'),
+    constraint 'fk_sc_course' foreign key ('course_id') references 'course' ('course_id'),
+) default charset=utf8;
+```
+
+#### 2.然后把当前数据库中所有相关数据导入到info表中
+
+```sql
+insert into info(student_id,course_id,score,sname,s_birth)
+	select student_id,course_id,score,sname,s_birth
+	from score join student s on s.sid = score.student_id; 
+```
+
+#### 3.把info表中“渭河”的统计学成绩修改为85分
+
+```sql
+update info
+set score = 85
+where sname = '渭河'
+and course_id in (select course_id from course where cname = '统计学');
+```
+
+#### 4.向info表中插入一些记录，这些记录要求符合以下条件：
+
+1）学生ID为：没上过课程“2”
+
+2）课程ID为：3
+
+3）成绩为：课程“3”的最高分
+
+```sql
+insert into info(student_id,course_id,score)
+select distinct student_id,3 as crouse_id,max
+from
+score join student s on score.student_id = s.sid and score.course_id != 2,
+(select max(score) 'max' from score where course_id = 3) t;
+```
+
+
+
+#### 5.删除info表中学生“2”的课程“1”成绩
+
+```sql
+delete from info where course_id =1 and student_id = 2;
+```
+
+
+
+#### 6.删除teacher表中没有任何教授任何课程的老师
+
+```sql
+delete from teacher where tid not in (select distinct teacher_id from course);
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
